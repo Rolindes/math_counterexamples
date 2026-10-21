@@ -24,91 +24,92 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 st.title("📐 Explorador de Contraejemplos Matemáticos Universitarios")
-st.markdown("Herramienta interactiva avanzada basada en Topología General y Análisis Real (UPM).")
+st.markdown("Herramienta interactiva basada rigurosamente en la **Hoja 3 de Topología (Aplicaciones y Continuidad)** y las relaciones de Cálculo.")
 
-# Base de datos interna con demostraciones detalladas extraídas de la teoría
+# Base de datos integrada con Hoja 3, identidades, discontinuidades y cálculo básico
 @st.cache_data
 def load_data():
     data = [
+        # --- TOPOLOGÍA: HOJA 3 (APLICACIONES Y CONTINUIDAD) ---
         {
-            "tema": "Topología General",
-            "teorema": "Metrizabilidad y Axiomas de Numerabilidad",
-            "hipotesis_rota": "Un espacio separable y 1-anumerable no es necesariamente metrizable ni 2-anumerable",
-            "nombre_contraejemplo": "Recta de Sorgenfrey (R, tau_Sor)",
-            "definicion_formal": "R dotada de la base de abiertos B_Sor = {[a, b) | a < b}",
-            "explicacion_detallada": "Demostración detallada: La familia de entornos básicos B(x) = {[x, x + 1/n) | n en N} es numerable y demuestra que el espacio cumple el primer axioma de numerabilidad (1AN)[cite: 26, 40]. Asimismo, Q es denso, por lo que es separable. Sin embargo, no es 2-anumerable (2AN) porque cualquier base de abiertos debe contener para cada real a un abierto básico cuyo ínfimo sea a, lo que impide que sea numerable[cite: 44]. Dado que todo espacio métrico separable debe ser 2-anumerable (Proposición 2.8.5), se concluye rigurosamente por reducción al absurdo que la recta de Sorgenfrey **no es metrizable**[cite: 34, 44]."
+            "tema": "Topología - Hoja 3",
+            "teorema": "Continuidad de la Aplicación Identidad según la Finura de las Topologías",
+            "hipotesis_rota": "La identidad entre espacios con distinta topología no es necesariamente continua en ambos sentidos",
+            "nombre_contraejemplo": "Identidad entre Recta Usual y Recta de Sorgenfrey",
+            "definicion_formal": "id: (R, tau_u) -> (R, tau_S) frente a id: (R, tau_S) -> (R, tau_u)",
+            "explicacion_detallada": "Basado en Hoja 3[cite: 97]:\n- **id: (R, tau_S) -> (R, tau_u)** es **continua globalmente** porque cualquier intervalo abierto usual (a,b) es abierto en Sorgenfrey al poder expresarse como unión de básicos [a + 1/n, b).\n- **id: (R, tau_u) -> (R, tau_S)** **no es continua en ningún punto**, ya que los abiertos básicos [a, b) de Sorgenfrey no contienen ningún entorno abierto usual simétrico (a - epsilon, a + epsilon) alrededor del extremo inferior a."
         },
         {
-            "tema": "Topología General",
-            "teorema": "Axiomas de Separación (Hausdorff vs T1)",
-            "hipotesis_rota": "Un espacio T1 no es necesariamente Hausdorff (T2) ni metrizable",
-            "nombre_contraejemplo": "Topología Cofinita en un conjunto infinito (R, tau_cf)",
-            "definicion_formal": "tau_cf = {U subset R | R \\ U es finito} unida con el vacío",
-            "explicacion_detallada": "Demostración detallada: Los cerrados propios de esta topología son exactamente los conjuntos finitos[cite: 7]. Dados dos puntos distintos x != y, podemos encontrar abiertos cuyos complementarios sean finitos que aíslan cada punto de manera unilateral (por lo que el espacio es T1). No obstante, dados dos abiertos no vacíos U y V, sus complementarios son finitos, lo que implica que su intersección R \\ (R\\U union R\\V) no puede ser vacía (se intersecan siempre en un conjunto infinito). Por tanto, es imposible separarlos mediante entornos abiertos disjuntos, demostrando que **no es Hausdorff (T2)**[cite: 31, 47]. Al ser Hausdorff una condición necesaria de metrizabilidad, la topología cofinita no es metrizable[cite: 34, 47]."
+            "tema": "Topología - Hoja 3",
+            "teorema": "Continuidad de la Identidad: Usual frente a Cofinita",
+            "hipotesis_rota": "Comparación de continuidad según la densidad y finura de la topología cofinita",
+            "nombre_contraejemplo": "id: (R, tau_u) -> (R, tau_cf) y su inversa",
+            "definicion_formal": "id: (R, tau_u) -> (R, tau_cf) y id: (R, tau_cf) -> (R, tau_u)",
+            "explicacion_detallada": "Basado en Hoja 3[cite: 97]:\n- **id: (R, tau_u) -> (R, tau_cf)** es **continua** porque la topología cofinita es más gruesa que la usual (todo abierto cofinito es abierto en la usual).\n- **id: (R, tau_cf) -> (R, tau_u)** **no es continua**, ya que un abierto usual (como (0,1)) no es abierto en la topología cofinita (su complementario no es finito)."
         },
         {
-            "tema": "Topología General",
-            "teorema": "Conexidad y Conexidad por Caminos",
-            "hipotesis_rota": "Todo espacio conexo por caminos es conexo, pero el recíproco falla",
-            "nombre_contraejemplo": "El Seno del Topólogo",
-            "definicion_formal": "A = {(x, sin(1/x)) | x en (0, 1]} unida con el segmento vertical {(0, y) | y en [-1, 1]}",
-            "explicacion_detallada": "Demostración detallada: El conjunto A es conexo por ser la adherencia en R^2 de la gráfica de una función continua (que es conexa por caminos). Sin embargo, **no es conexo por caminos** porque ninguna función continua gamma: [0, 1] -> R^2 puede unir el origen (0,0) con un punto de la curva oscilante sin que las oscilaciones infinitas rompan la continuidad en la trayectoria límite."
+            "tema": "Topología - Hoja 3",
+            "teorema": "Invarianza Topológica: La Continuidad NO Preserva la Acotación",
+            "hipotesis_rota": "Una función continua definida en un conjunto acotado puede tener una imagen no acotada",
+            "nombre_contraejemplo": "f(x) = 1/x sobre el conjunto acotado (0, 1]",
+            "definicion_formal": "f: (0, 1] -> R dada por f(x) = 1/x con la topología usual",
+            "explicacion_detallada": "Basado en propiedades generales de continuidad[cite: 97]: El dominio A = (0, 1] es un conjunto acotado en la recta real. La función f(x) = 1/x es continua en todo su dominio. Sin embargo, su imagen es f((0, 1]) = [1, +infty), que es un conjunto **no acotado**. Esto demuestra rigurosamente que la propiedad de acotación **no se conserva** bajo aplicaciones continuas."
         },
         {
-            "tema": "Topología General",
-            "teorema": "Axioma de Separación Hausdorff (T2)",
-            "hipotesis_rota": "Espacios con bases locales simétricas que fallan en separar puntos globales",
-            "nombre_contraejemplo": "La Recta de Dos Orígenes",
-            "definicion_formal": "X = Rsqcup{*}, con base que duplica el punto 0 añadiendo entornos abiertos con dos orígenes",
-            "explicacion_detallada": "Demostración detallada: Consideremos los dos orígenes 0 y *. Cualquier entorno abierto básico de 0 contiene un intervalo abierto estándar de la forma (-epsilon, epsilon) sin el punto, el cual comparte exactamente los mismos puntos que el entorno correspondiente de *. Por consiguiente, es imposible encontrar entornos abiertos disjuntos que separen 0 de *. El espacio **no es Hausdorff**, y por tanto **no es metrizable**[cite: 34, 42, 45]."
+            "tema": "Topología - Hoja 3",
+            "teorema": "Caracterización de Continuidad en Topología Cofinita",
+            "hipotesis_rota": "Una aplicación entre espacios cofinitos no es continua a menos que sus fibras cumplan una condición estricta",
+            "nombre_contraejemplo": "Aplicación con Fibras Infinitas",
+            "definicion_formal": "f: (X, tau_cf) -> (Y, tau_cf) donde existe y en Y con f^{-1}({y}) infinito",
+            "explicacion_detallada": "Basado en Hoja 3 (Ejercicio 6)[cite: 98]: Una aplicación entre espacios con la topología cofinita es continua en x si y solo si la imagen inversa de cada punto exterior, f^{-1}({y}), es un conjunto **finito** para todo y != f(x). Globalmente, f es continua si y solo si es constante o todas sus fibras (excepto quizás una) son finitas[cite: 98]."
         },
         {
-            "tema": "Topología General",
-            "teorema": "Axiomas de Numerabilidad (1AN vs 2AN)",
-            "hipotesis_rota": "Todo espacio 1-anumerable (1AN) no es necesariamente 2-anumerable (2AN)",
-            "nombre_contraejemplo": "Espacio Discreto No Numerable (X, tau_dis)",
-            "definicion_formal": "X es un conjunto infinito no numerable dotado de tau_dis = P(X)",
-            "explicacion_detallada": "Demostración detallada: Para cada punto x en X, la familia de singletons B(x) es una base de entornos numerable trivial, por lo que cumple 1AN[cite: 20, 26]. No obstante, cualquier base de abiertos B de la topología discreta debe contener obligatoriamente a todos los subconjuntos unipuntuales {{x} | x en X}. Al ser X un conjunto no numerable, la base B es necesariamente no numerable, violando el segundo axioma de numerabilidad (2AN)[cite: 23, 24]."
+            "tema": "Topología - Hoja 3",
+            "teorema": "Topología de Rayos a Izquierda (tau_<-)",
+            "hipotesis_rota": "La continuidad de funciones monótonas y escalón en topologías no Hausdorff",
+            "nombre_contraejemplo": "f(x) = x^2 y g(x) = floor(x) en (R, tau_<-)",
+            "definicion_formal": "tau_<- = {emptyset, R} union {(-infty, a) | a en R}",
+            "explicacion_detallada": "Basado en Hoja 3 (Ejercicio 7*)[cite: 98, 99]: En esta topología, los abiertos básicos son rayos hacia la izquierda. Toda aplicación continua u: R -> R con esta topología es obligatoriamente **no decreciente**[cite: 99]. Funciones como g(x) = floor(x) o h(x) = ceil(x) exhiben puntos de discontinuidad característicos debido a los saltos y la asimetría de los abiertos."
         },
         {
-            "tema": "Topología General",
-            "teorema": "Invariantes Topológicos y Métricas",
-            "hipotesis_rota": "Las propiedades métricas (como la acotación) se conservan bajo homeomorfismos",
-            "nombre_contraejemplo": "Métrica Euclidiana vs Métrica Acotada Asociada en R^n",
-            "definicion_formal": "d_2(x,y) y su contraparte acotada d_bar(x,y) = min(1, d_2(x,y))",
-            "explicacion_detallada": "Demostración detallada: Mediante la caracterización de equivalencia topológica, ambas métricas inducen exactamente la misma topología en R^n (tau_d2 = tau_d_bar)[cite: 34, 35]. Sin embargo, todo el espacio R^n con d_bar es un espacio métrico acotado (con diámetro menor o igual a 1), mientras que con d_2 es claramente no acotado[cite: 34, 35]. Esto demuestra rigurosamente que **la acotación NO es una propiedad topológica**[cite: 34, 35]."
+            "tema": "Topología - Hoja 3",
+            "teorema": "Función Característica y Fronteras",
+            "hipotesis_rota": "La función característica de un conjunto es continua si y solo si el conjunto es abierto y cerrado a la vez",
+            "nombre_contraejemplo": "chi_Q (Función de Dirichlet en R)",
+            "definicion_formal": "chi_Q(x) = 1 si x en Q, y 0 si x no en Q",
+            "explicacion_detallada": "Basado en Hoja 3 (Ejercicio 4)[cite: 98]: Con la topología discreta en {0,1}, los puntos de discontinuidad de la función característica chi_A coinciden exactamente con la **frontera del conjunto A** (Fr(A)). Para A = Q en la recta usual, Fr(Q) = R, por lo que chi_Q es discontinua en todos los puntos de la recta."
+        },
+
+        # --- CÁLCULO: RELACIONES 1, 2 Y 3 ---
+        {
+            "tema": "Cálculo - Sucesiones",
+            "teorema": "Convergencia del Valor Absoluto vs Sucesión Original",
+            "hipotesis_rota": "El recíproco no es cierto: La convergencia de {|a_n|} no implica la convergencia de {a_n}",
+            "nombre_contraejemplo": "Sucesión Alternada a_n = (-1)^n",
+            "definicion_formal": "a_n = (-1)^n",
+            "explicacion_detallada": "Basado en Relación 2 de Sucesiones[cite: 92]: El valor absoluto |a_n| = 1 es constante y converge a 1. Sin embargo, la sucesión original a_n oscila perpetuamente entre -1 y 1, por lo que **diverge**[cite: 92]."
         },
         {
-            "tema": "Topología General",
-            "teorema": "Continuidad de la Aplicación Identidad entre Topologías",
-            "hipotesis_rota": "La identidad es continua independientemente de la finura relativa de las topologías",
-            "nombre_contraejemplo": "id: (R, tau_Sor) -> (R, tau_u) frente a id': (R, tau_u) -> (R, tau_Sor)",
-            "definicion_formal": "Aplicación identidad evaluada entre la recta de Sorgenfrey y la recta usual",
-            "explicacion_detallada": "Demostración detallada: La aplicación id: (R, tau_Sor) -> (R, tau_u) es **continua** porque cualquier intervalo abierto usual (a, b) es abierto en Sorgenfrey al poder expresarse como unión numerable de abiertos básicos [a + 1/n, b)[cite: 25, 28]. En dirección opuesta, id': (R, tau_u) -> (R, tau_Sor) **no es continua en ningún punto**, ya que los abiertos básicos [a, b) de Sorgenfrey no contienen ningún entorno abierto usual simétrico (a - epsilon, a + epsilon) alrededor del extremo inferior a[cite: 25, 28]."
+            "tema": "Cálculo - Sucesiones",
+            "teorema": "Convergencia en Media (Cesàro) y Término General",
+            "hipotesis_rota": "Si las sumas medias S_n/n convergen a l, el término general a_n no necesita converger",
+            "nombre_contraejemplo": "Sucesión de Medias con a_n = (-1)^n",
+            "definicion_formal": "a_n = (-1)^n y S_n = a_1 + ... + a_n",
+            "explicacion_detallada": "Basado en Relación 2 de Sucesiones[cite: 93]: Aunque a_n diverge[cite: 92], las sumas parciales S_n oscilan acotadamente, haciendo que el límite en media S_n/n tienda a 0[cite: 93]."
         },
         {
-            "tema": "Análisis Real",
-            "teorema": "Teorema del Valor Intermedio (Bolzano)",
-            "hipotesis_rota": "La función debe ser continua en todo el intervalo cerrado [a, b]",
-            "nombre_contraejemplo": "Función Escalón (Parte Entera)",
-            "definicion_formal": "f(x) = floor(x) en el intervalo [0, 2]",
-            "explicacion_detallada": "Demostración detallada: El teorema exige continuidad completa en [a, b]. En este contraejemplo, la función presenta un salto brusco de 0 a 1 en x = 1. Debido a esta discontinuidad de salto, la función jamás toma valores decimales intermedios como 0.5, invalidando la conclusión del teorema."
+            "tema": "Cálculo - Números Reales",
+            "hipotesis_rota": "Simplificación algebraica prohibida por división entre cero",
+            "nombre_contraejemplo": "Falacia de x = y que demuestra 2 = 1",
+            "definicion_formal": "x = y => x^2 - y^2 = xy - y^2 => (x-y)(x+y) = y(x-y) => x+y = y",
+            "explicacion_detallada": "Basado en Relación 1[cite: 89]: El error radica en cancelar el factor (x-y) en ambos lados. Como se partía de x = y, entonces x - y = 0, lo que constituye una **división ilegal entre cero**[cite: 89]."
         },
         {
-            "tema": "Análisis Real",
-            "teorema": "Diferenciabilidad Implica Continuidad",
-            "hipotesis_rota": "El recíproco no es cierto: la continuidad no garantiza la existencia de derivada",
-            "nombre_contraejemplo": "Función Valor Absoluto en el Origen",
-            "definicion_formal": "f(x) = |x| evaluada en x = 0",
-            "explicacion_detallada": "Demostración detallada: La función es continua en todo su dominio real, incluido x = 0. No obstante, al calcular los límites laterales de la tasa de variación media en el origen, obtenemos -1 por la izquierda y +1 por la derecha. Como los límites laterales no coinciden, la derivada no existe debido al punto anguloso."
-        },
-        {
-            "tema": "Álgebra Abstracta",
-            "teorema": "Teorema de Lagrange en Grupos",
-            "hipotesis_rota": "El suborden debe dividir al orden del grupo y cumplirse condiciones estructurales",
-            "nombre_contraejemplo": "Grupo Simétrico S3 y su subgrupo de orden 2",
-            "definicion_formal": "S3 de orden 6 con un subgrupo H de orden 2",
-            "explicacion_detallada": "Demostración detallada: El teorema de Lagrange establece que el orden de cualquier subgrupo divide al orden del grupo principal (2 divide a 6). Sin embargo, este contraejemplo estructural ilustra que el recíproco no es general: no todo divisor del orden del grupo garantiza la existencia de un subgrupo normal de dicho orden, fallando en estructuras no abelianas."
+            "tema": "Cálculo - Series Numéricas",
+            "hipotesis_rota": "Condición necesaria de convergencia: que a_n tienda a 0 no garantiza que la serie converja",
+            "nombre_contraejemplo": "Serie Armónica",
+            "definicion_formal": "sum_{n=1}^infty (1/n)",
+            "explicacion_detallada": "Basado en Relación 3[cite: 95]: El término general 1/n tiende a 0 cuando n -> infinity. No obstante, las sumas parciales crecen de forma logarítmica y divergen al infinito."
         }
     ]
     return pd.DataFrame(data)
@@ -129,7 +130,7 @@ if df is not None and not df.empty:
 
     st.sidebar.markdown("---")
     
-    busqueda = st.sidebar.text_input("🔍 Buscar Teorema o Contraejemplo:", placeholder="Ej. Sorgenfrey, Hausdorff, Bolzano...")
+    busqueda = st.sidebar.text_input("🔍 Buscar Teorema o Contraejemplo:", placeholder="Ej. Hoja 3, Sorgenfrey, Identidad...")
     if busqueda:
         df_filtrado = df_filtrado[
             df_filtrado['teorema'].str.contains(busqueda, case=False, na=False) |
@@ -152,7 +153,7 @@ if df is not None and not df.empty:
                 st.markdown(f"**Definición / Ejemplo Formal:**")
                 st.code(row['definicion_formal'], language="text")
             with col2:
-                st.markdown(f"**Nivel:** Universitario (UPM)")
+                st.markdown(f"**Nivel:** Universitario (UPM)[cite: 97]")
             
             st.markdown("---")
             st.markdown(f"**💡 Demostración y Explicación Detallada:**\n\n{row['explicacion_detallada']}")
