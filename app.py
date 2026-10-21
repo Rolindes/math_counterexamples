@@ -23,15 +23,15 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-st.title("📐 Explorador Masivo: Cálculo y Topología UPM")
-st.markdown("Catálogo exhaustivo de contraejemplos, falacias y ejercicios universitarios basado en las relaciones oficiales y hojas de problemas.")
+st.title("📐 Explorador Masivo y Unificado: Cálculo y Topología UPM")
+st.markdown("Catálogo exhaustivo que incluye todas las relaciones de cálculo, métricas, topologías y contraejemplos.")
 
-# Base de datos ampliada masivamente (Cálculo y Topología UPM)
+# Base de datos unificada con todo el contenido anterior y nuevo
 @st.cache_data
 def load_data():
     data = [
         # ==========================================
-        # CÁLCULO (RELACIONES 1, 2 y 3)
+        # CÁLCULO - NÚMEROS REALES (RELACIÓN 1)
         # ==========================================
         {
             "tema": "Cálculo - Rel. 1 (Reales)",
@@ -81,6 +81,10 @@ def load_data():
             "definicion_formal": "C = {x_1 + y_1, ..., x_n + y_n}, donde sup C ≤ sup A + sup B de forma estricta",
             "explicacion_detallada": "Aunque para conjuntos generales se cumple la igualdad en supremos e ínfimos, al restringirnos a sumas puntuales indexadas finitas las desigualdades pueden cumplirse estrictamente[cite: 91]."
         },
+
+        # ==========================================
+        # CÁLCULO - SUCESIONES (RELACIÓN 2)
+        # ==========================================
         {
             "tema": "Cálculo - Rel. 2 (Sucesiones)",
             "teorema": "Convergencia del Valor Absoluto",
@@ -129,6 +133,10 @@ def load_data():
             "definicion_formal": "Evolución de límites según x_1 = 1/2, 3/2 o 5/2",
             "explicacion_detallada": "Dependiendo del valor inicial x_1, la sucesión recurrente puede converger a puntos fijos diferentes o divergir hacia el infinito[cite: 94]."
         },
+
+        # ==========================================
+        # CÁLCULO - SERIES NUMÉRICAS (RELACIÓN 3)
+        # ==========================================
         {
             "tema": "Cálculo - Rel. 3 (Series)",
             "teorema": "Condición Necesaria de Convergencia en Series",
@@ -184,14 +192,6 @@ def load_data():
             "nombre_contraejemplo": "Σ [1 / (n(n+1))]",
             "definicion_formal": "Σ_{n=1}^∞ [1 / (n(n+1))] = Σ [1/n - 1/(n+1)]",
             "explicacion_detallada": "Al descomponer en fracciones simples, los términos se cancelan telescópicamente dejando únicamente el primer término, resultando en una suma exacta igual a 1[cite: 95]."
-        },
-        {
-            "tema": "Cálculo - Rel. 3 (Series)",
-            "teorema": "Criterio de la Raíz y del Cociente en Casos Límite",
-            "hipotesis_rota": "Indeterminación cuando el límite del cociente o raíz es exactamente igual al valor crítico",
-            "nombre_contraejemplo": "Series con cociente unitario límite",
-            "definicion_formal": "lim (a_{n+1} / a_n) = 1",
-            "explicacion_detallada": "Cuando el criterio del cociente arroja un límite igual a 1, el criterio no decide, requiriendo métodos más finos como comparación asintótica[cite: 95]."
         },
 
         # ==========================================
