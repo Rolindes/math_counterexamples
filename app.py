@@ -361,6 +361,87 @@ def load_data():
             try:
                 data_cargada = json.load(f)
                 df_guardado = pd.DataFrame(data_cargada)
-                # Unimos sin duplicar para asegurar que cargan los más de 40 elementos iniciales y los nuevos
                 df_total = pd.concat([df_inicial, df_guardado]).drop_duplicates(subset=["teorema", "nombre_contraejemplo"]).reset_index(drop=True)
                 return df_total
+            except json.JSONDecodeError:
+                return df_inicial
+    else:
+        save_data(df_inicial)
+        return df_inicial
+
+def save_data(df):
+    with open(DB_FILE, "w", encoding="utf-8") as f:
+        json.dump(df.to_dict(orient="records"), f, ensure_ascii=False, indent=4)
+
+df = load_data()
+
+st.title("📐 Explorador Masivo: Cálculo y Topología UPM")
+st.markdown("Catálogo completo con más de 40 elementos: cálculo, métricas, teoría de puntos, separabilidad, axiomas T_i y formulario de adición.")
+
+# --- BARRA LATERAL: NAVEGACIÓN Y FILTROS ---
+st.sidebar.header("🧭 Navegación y Filtros")
+
+temas_disponibles = ['Todos los Bloques'] + list(df['tema'].unique())
+tema_seleccionado = st.sidebar.selectbox("📂 Selecciona el Bloque:", temas_disponibles)
+
+if tema_seleccionado != 'Todos los Bloques':
+    df_filtrado = df[df['tema'] == tema_seleccionado]
+else:
+    df_filtrado = df
+
+busqueda = st.sidebar.text_input("🔍 Buscar Teorema / Contraejemplo:", placeholder="Ej. Separabilidad, T1, Interior...")
+if busqueda:
+    df_filtrado = df_filtrado[
+        df_filtrado['teorema'].str.contains(busqueda, case=False, na=False) |
+        df_filtrado['nombre_contraejemplo'].str.contains(busqueda, case=False, na=False) |
+        df_filtrado['explicacion_detallada'].str.contains(busqueda, case=False, na=False)
+    ]
+
+st.sidebar.markdown("---")
+st.sidebar.metric(label="Elementos totales en la app", value=len(df_filtrado))
+
+# --- FORMULARIO PARA AÑADIR NUEVOS CONTRAEJEMPLOS ---
+with st.sidebar.expander("➕ Añadir Nuevo Contraejemplo"):
+    with st.form("form_nuevo_contraejemplo"):
+        nuevo_tema = st.text_input("Bloque / Materia", placeholder="Ej. Topología - Hoja 3")
+        nuevo_teorema = st.text_input("Teorema / Concepto", placeholder="Ej. Teorema de Baire")
+        nueva_hipotesis = st.text_input("Hipótesis que se rompe", placeholder="Ej. Espacio métrico completo")
+        nuevo_contra = st.text_input("Nombre del Contraejemplo", placeholder="Ej. ℚ en la métrica usual")
+        nueva_formal = st.text_area("Definición / Ejemplo Formal", placeholder="Ej. Int(ℚ) = ∅...")
+        nueva_explicacion = st.text_area("Explicación Detallada", placeholder="Explica la demostración...")
+        
+        submit_button = st.form_submit_button(label="Guardar en la Base de Datos")
+        
+        if submit_button:
+            if nuevo_teorema and nuevo_contra:
+                nuevo_registro = {
+                    "tema": nuevo_tema if nuevo_tema else "General",
+                    "teorema": nuevo_teorema,
+                    "hipotesis_rota": nueva_hipotesis,
+                    "nombre_contraejemplo": nuevo_contra,
+                    "definicion_formal": nueva_formal,
+                    "explicacion_detallada": nueva_explicacion
+                }
+                df = pd.concat([df, pd.DataFrame([nuevo_registro])], ignore_index=True)
+                save_data(df)
+                st.sidebar.success("¡Contraejemplo añadido con éxito!")
+                st.rerun()
+            else:
+                st.sidebar.error("Completa al menos el Teorema y el Contraejemplo.")
+
+# --- PANTALLA PRINCIPAL ---
+st.subheader(f"Resultados en: {tema_seleccionado} ({len(df_filtrado)} elementos encontrados)")
+
+for index, row in df_filtrado.iterrows():
+    with st.expander(f"📌 **{row['teorema']}** — *{row['nombre_contraejemplo']}*"):
+        col1, col2 = st.columns([2, 1])
+        with col1:
+            st.markdown(f"**Materia / Bloque:** `{row['tema']}`")
+            st.markdown(f"**Concepto / Hipótesis:** ⚠️ _{row['hipotesis_rota']}_")
+            st.markdown(f"**Definición / Ejemplo Formal:**")
+            st.code(row['definicion_formal'], language="text")
+        with col2:
+            st.markdown(f"**Nivel:** Universitario (UPM)")
+        
+        st.markdown("---")
+        st.markdown(f"**💡 Explicación y Demostración Detallada:**\n\n{row['explicacion_detallada']}")
